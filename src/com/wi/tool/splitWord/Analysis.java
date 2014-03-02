@@ -129,7 +129,6 @@ public abstract class Analysis {
 			analysis(gp, startOffe, gp.chars.length);
 		}
 		List<Term> result = this.getResult(gp);
-
 		terms.addAll(result);
 	}
 
@@ -213,7 +212,6 @@ public abstract class Analysis {
 		}
 
 		String str = graph.realStr;
-
 		for (Term term : result) {
 			term.setRealName(str.substring(term.getOffe(), term.getOffe()
 					+ term.getName().length()));

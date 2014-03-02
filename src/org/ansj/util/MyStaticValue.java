@@ -228,7 +228,6 @@ public class MyStaticValue {
 				if (StringUtil.isBlank(temp)) {
 					continue;
 				}
-				System.out.println(temp);
 				strs = temp.split("\t");
 				freq = Integer.parseInt(strs[1]);
 				strs = strs[0].split("@");

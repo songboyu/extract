@@ -73,7 +73,6 @@ public class SplitWord {
 		}
 
 		List<Element> elements = vterbi(line);
-
 		LinkedList<String> result = new LinkedList<String>();
 
 		Element e = null;

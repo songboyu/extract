@@ -53,7 +53,6 @@ public class NlpAnalysis extends Analysis {
 				// 词性标注
 				List<Term> result = getResult();
 				new NatureRecognition(result).recognition();
-
 				if (learn == null) {
 					learn = new LearnTool();
 				}
@@ -61,7 +60,6 @@ public class NlpAnalysis extends Analysis {
 
 				// 通过crf分词
 				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
-
 				for (String word : words) {
 					if (word.length() < 2 || InitDictionary.isInSystemDic(word)
 							|| WordAlert.isRuleWord(word)) {

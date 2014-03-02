@@ -28,8 +28,9 @@ import com.wi.tool.splitWord.analysis.NlpAnalysis;
 public class ExtractServlet extends HttpServlet {
 
 	private enum ExtractMethod {
-		NEW,KEY, ALL 
+		SEG,NEW,KEY, ALL 
 	}
+
 
 	@Override
 	public void init() throws ServletException {
@@ -52,34 +53,58 @@ public class ExtractServlet extends HttpServlet {
 
 	private void process(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+
 		req.setCharacterEncoding("UTF-8");
-		String strMethod = new String(req.getParameter("method").getBytes(
-				"ISO8859_1"), "UTF-8");
-		String input = new String(req.getParameter("input").getBytes(
-				"ISO8859_1"), "UTF-8");
+		resp.setCharacterEncoding("UTF-8");
+		resp.setContentType("application/json");
+		PrintWriter out = resp.getWriter();
+		
+		String strMethod = null;
+		String input =null;
+
+		if(req.getParameter("input") == null ){
+			out.print("Hello");
+			return;
+		}else{ 
+			input = new String(req.getParameter("input").getBytes("ISO8859_1"), "UTF-8");
+		}
+		if(req.getParameter("method") == null){
+			strMethod = "ALL";
+		}else{ 
+			strMethod = new String(req.getParameter("method").getBytes("ISO8859_1"), "UTF-8");
+		}
+		ExtractMethod method =  ExtractMethod.valueOf(strMethod.toUpperCase());
 		LearnTool learnTool = new LearnTool();
-		ExtractMethod method = ExtractMethod.ALL;
 		Collection<Keyword> keyWords = null;
 		List<Term> terms = null;
 
-		method = ExtractMethod.valueOf(strMethod.toUpperCase());
 
-		if (method == ExtractMethod.ALL || method == ExtractMethod.KEY) {
+		if (method == ExtractMethod.ALL) {
+			KeyWordComputer keyWordComputer = new KeyWordComputer(10);
+			keyWords = keyWordComputer.computeArticleTfidf(input);
+			terms = NlpAnalysis.parse(input, learnTool);
+		}
+		else if (method == ExtractMethod.SEG) {
+			terms = NlpAnalysis.parse(input);
+		}
+		else if (method == ExtractMethod.NEW) {
+			terms = NlpAnalysis.parse(input, learnTool);
+		}
+		else if(method == ExtractMethod.KEY){
 			KeyWordComputer keyWordComputer = new KeyWordComputer(10);
 			keyWords = keyWordComputer.computeArticleTfidf(input);
 		}
-		if (method == ExtractMethod.ALL || method == ExtractMethod.NEW) {
-			terms = NlpAnalysis.parse(input, learnTool);
-		}
-		resp.setContentType("application/json");
-		resp.setCharacterEncoding("UTF-8");
-		PrintWriter out = resp.getWriter();
+
 		switch (method) {
 		case ALL:
 			JSONObject json = new JSONObject();
+			json.putAll(termsToMap(terms));
 			json.putAll(newWordsToMap(learnTool));
 			json.putAll(keyWordsToMap(keyWords));
 			out.print((JSON) json);
+			break;
+		case SEG:
+			out.print(JSONSerializer.toJSON(termsToMap(terms)));
 			break;
 		case NEW:
 			out.print(JSONSerializer.toJSON(newWordsToMap(learnTool)));
@@ -107,21 +132,20 @@ public class ExtractServlet extends HttpServlet {
 		return map;
 	}
 
-	@SuppressWarnings("unused")
-	private static Map<String, Map<String, String>> keyWordsWithScoreToMap(
-			Collection<Keyword> keyWords) {
-		// TODO Auto-generated method stub
-		Map<String, String> value = new HashMap<String, String>();
-		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+	//	private static Map<String, Map<String, String>> keyWordsWithScoreToMap(
+	//			Collection<Keyword> keyWords) {
+	//		// TODO Auto-generated method stub
+	//		Map<String, String> value = new HashMap<String, String>();
+	//		Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+	//
+	//		for (Keyword k : keyWords) {
+	//			DecimalFormat df=new DecimalFormat(".##");
+	//			value.put(k.getName(), df.format(k.getScore()));
+	//		}
+	//		map.put("KeyWords", value);
+	//		return map;
+	//	}
 
-		for (Keyword k : keyWords) {
-			DecimalFormat df=new DecimalFormat(".##");
-			value.put(k.getName(), df.format(k.getScore()));
-		}
-		map.put("KeyWords", value);
-		return map;
-	}
-	
 	private static Map<String, List<String>> keyWordsToMap(
 			Collection<Keyword> keyWords) {
 		// TODO Auto-generated method stub
@@ -133,6 +157,17 @@ public class ExtractServlet extends HttpServlet {
 			value.add(tmp);
 		}
 		map.put("KeyWords", value);
+		return map;
+	}
+	private static Map<String, List<String>> termsToMap(List<Term> terms) {
+		// TODO Auto-generated method stub
+		List<String> value = new ArrayList<String>();
+		Map<String, List<String>> map = new HashMap<String, List<String>>();
+		for (Term term : terms) {
+			String tmp = term.getName();
+			value.add(tmp);
+		}
+		map.put("Segmentation", value);
 		return map;
 	}
 }
