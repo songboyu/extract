@@ -61,10 +61,12 @@ public class NlpAnalysis extends Analysis {
 				// 通过crf分词
 				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
 				for (String word : words) {
+					word = word.replaceAll("[\\pP‘’“”]", "");
 					if (word.length() < 2 || InitDictionary.isInSystemDic(word)
 							|| WordAlert.isRuleWord(word)) {
 						continue;
 					}
+					//删除所有标点,添加新词
 					learn.addTerm(new NewWord(word, NatureLibrary
 							.getNature("nw"), -word.length()));
 				}

@@ -15,12 +15,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.ansj.app.keyword.KeyWordComputer;
+import org.ansj.app.keyword.Keyword;
+
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
-import com.wi.tool.app.keyword.KeyWordComputer;
-import com.wi.tool.app.keyword.Keyword;
 import com.wi.tool.dic.LearnTool;
 import com.wi.tool.domain.Term;
 import com.wi.tool.splitWord.analysis.NlpAnalysis;
@@ -98,7 +99,7 @@ public class ExtractServlet extends HttpServlet {
 		switch (method) {
 		case ALL:
 			JSONObject json = new JSONObject();
-			json.putAll(termsToMap(terms));
+//			json.putAll(termsToMap(terms));
 			json.putAll(newWordsToMap(learnTool));
 			json.putAll(keyWordsToMap(keyWords));
 			out.print((JSON) json);

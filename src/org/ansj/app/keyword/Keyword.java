@@ -1,4 +1,4 @@
-package com.wi.tool.app.keyword;
+package org.ansj.app.keyword;
 
 public class Keyword implements Comparable<Keyword> {
 	private String name;
