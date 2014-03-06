@@ -15,16 +15,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ansj.app.keyword.KeyWordComputer;
-import org.ansj.app.keyword.Keyword;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
-import com.wi.tool.dic.LearnTool;
-import com.wi.tool.domain.Term;
-import com.wi.tool.splitWord.analysis.NlpAnalysis;
+import com.wi.main.app.keyword.KeyWordComputer;
+import com.wi.main.app.keyword.Keyword;
+import com.wi.main.dic.LearnTool;
+import com.wi.main.domain.Term;
+import com.wi.main.splitWord.analysis.NlpAnalysis;
+
 
 public class ExtractServlet extends HttpServlet {
 

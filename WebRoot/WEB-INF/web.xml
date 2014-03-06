@@ -6,21 +6,11 @@
 	<display-name></display-name>
 	<servlet>
 		<servlet-name>ExtractServlet</servlet-name>
-		<servlet-class>com.wi.servlet.ExtractServlet</servlet-class>
+		<servlet-class>com.wi.main.servlet.ExtractServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ExtractServlet</servlet-name>
 		<url-pattern>/</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>DataTestServlet</servlet-name>
-		<servlet-class>com.wi.servlet.DataTestServlet</servlet-class>
-		
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DataTestServlet</servlet-name>
-		<url-pattern>/test</url-pattern>
 	</servlet-mapping>
 </web-app>

@@ -14,12 +14,13 @@ import java.util.Map.Entry;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
-import org.ansj.util.MyStaticValue;
 
-import com.wi.tool.dic.LearnTool;
-import com.wi.tool.domain.Term;
-import com.wi.tool.splitWord.analysis.NlpAnalysis;
-import com.wi.tool.xml.ToolXmlBySAX;
+import com.wi.main.dic.LearnTool;
+import com.wi.main.domain.Term;
+import com.wi.main.splitWord.analysis.NlpAnalysis;
+import com.wi.main.util.MyStaticValue;
+import com.wi.main.xml.ToolXmlBySAX;
+
 
 public class WeiboDataTest {
 	private static List<HashMap<String, String>> list = null;
